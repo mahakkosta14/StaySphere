@@ -1,0 +1,39 @@
+{
+  "engines": {
+    "node": "22.14.0"
+  },
+  "name": "app-major-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@maptiler/geocoding-control": "^2.1.7",
+    "@maptiler/sdk": "^3.10.2",
+    "cloudinary": "^1.41.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^17.2.3",
+    "ejs": "^4.0.1",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "joi": "^18.0.2",
+    "maplibre-gl": "^5.17.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.21.0",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^3.0.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^7.1.2",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0"
+  }
+}
