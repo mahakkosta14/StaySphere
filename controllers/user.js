@@ -4,42 +4,26 @@ module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs");
 };
 
-module.exports.SignupUser = async (req, res) => {
+module.exports.SignupUser = async (req, res, next) => {
     try {
         let { username, email, password } = req.body;
         const newUser = new User({ username, email });
 
-        await User.register(newUser, password);
+        let registeredUser = await User.register(newUser, password);
 
-        req.flash("success", "Welcome to Wanderlust");
-        return res.redirect("/listings");
+        req.login(registeredUser, (err) => {
+            if (err) {
+                return next(err);   //  now next exists
+            }
+            req.flash("success", "Welcome to Wanderlust");
+            return res.redirect("/listings"); //  return added
+        });
 
     } catch (e) {
         req.flash("error", e.message);
-        return res.redirect("/signup");
+        return res.redirect("/signup"); //  return added
     }
 };
-
-// module.exports.SignupUser = async (req, res, next) => {
-//     try {
-//         let { username, email, password } = req.body;
-//         const newUser = new User({ username, email });
-
-//         let registeredUser = await User.register(newUser, password);
-
-//         req.login(registeredUser, (err) => {
-//             if (err) {
-//                 return next(err);   //  now next exists
-//             }
-//             req.flash("success", "Welcome to Wanderlust");
-//             return res.redirect("/listings"); //  return added
-//         });
-
-//     } catch (e) {
-//         req.flash("error", e.message);
-//         return res.redirect("/signup"); //  return added
-//     }
-// };
 
 // module.exports.SignupUser = (async (req, res, next) => {
 //     try{
