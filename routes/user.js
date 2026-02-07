@@ -12,35 +12,18 @@ router.route("/signup")
 
 router.route("/login")
 .get( listingController.renderLoginForm)
-// .post( saveRedirectUrl, passport.authenticate("local",{ 
-//     failureRedirect : "/login",
-//     failureFlash : true,
-//     }), listingController.loginUser
-// );
-// .post(saveRedirectUrl, (req, res, next) => {
-//   passport.authenticate("local", (err, user, info) => {
-//     if (err) return next(err);
+.post( saveRedirectUrl, passport.authenticate("local",{ 
+    failureRedirect : "/login",
+    failureFlash : true,
+    }), listingController.loginUser
+);
+// .post( saveRedirectUrl, (req, res, next) => {
 
-//     if (!user) {
-//       req.flash("error", info.message);
-//       return res.redirect("/login");
+//   return passport.authenticate("local", (err, user, info) => {
+
+//     if (err) {
+//       return next(err);
 //     }
-
-//     req.logIn(user, (err) => {
-//       if (err) return next(err);
-
-//       req.flash("success", "Welcome back to Wanderlust! You are logged in!");
-//       const redirectUrl = res.locals.redirectUrl || "/listings";
-//       delete req.session.redirectUrl;
-
-//       return res.redirect(redirectUrl);
-//     });
-//   })(req, res, next);
-// });
-
-// .post(saveRedirectUrl, (req, res, next) => {
-//   passport.authenticate("local", (err, user, info) => {
-//     if (err) return next(err);
 
 //     if (!user) {
 //       const message = info?.message || "Invalid username or password";
@@ -48,52 +31,25 @@ router.route("/login")
 //       return res.redirect("/login");
 //     }
 
-//     req.logIn(user, (err) => {
-//       if (err) return next(err);
+//     return req.logIn(user, (err) => {
+
+//       if (err) {
+//         return next(err);
+//       }
 
 //       req.flash("success", "Welcome back to Wanderlust! You are logged in!");
+
 //       const redirectUrl = res.locals.redirectUrl || "/listings";
+
 //       delete req.session.redirectUrl;
 
 //       return res.redirect(redirectUrl);
+
 //     });
+
 //   })(req, res, next);
+
 // });
-
-
-.post( saveRedirectUrl, (req, res, next) => {
-
-  return passport.authenticate("local", (err, user, info) => {
-
-    if (err) {
-      return next(err);
-    }
-
-    if (!user) {
-      const message = info?.message || "Invalid username or password";
-      req.flash("error", message);
-      return res.redirect("/login");
-    }
-
-    return req.logIn(user, (err) => {
-
-      if (err) {
-        return next(err);
-      }
-
-      req.flash("success", "Welcome back to Wanderlust! You are logged in!");
-
-      const redirectUrl = res.locals.redirectUrl || "/listings";
-
-      delete req.session.redirectUrl;
-
-      return res.redirect(redirectUrl);
-
-    });
-
-  })(req, res, next);
-
-});
 
 router.get("/logout", listingController.logoutUser);
 

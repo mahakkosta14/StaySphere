@@ -66,7 +66,7 @@ const sessionOptions = {
     store,
     secret : process.env.SECRET,
     resave : false,
-    saveUninitialized : false,
+    saveUninitialized : true,
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge :  7 * 24 * 60 * 60 * 1000,
@@ -100,6 +100,7 @@ app.use("/", userRouter);
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page not Found"));
 });
+
 app.use((err, req, res, next) => {
     console.log(" ERROR AFTER RESPONSE?", res.headersSent);
     console.log(err);
@@ -109,16 +110,16 @@ app.use((err, req, res, next) => {
     }
 
     let { statusCode = 500, message = "Something went wrong!" } = err;
-    return res.status(statusCode).render("error.ejs", { message });
+    return res.status(statusCode).render("Error.ejs", { message });
 });
 
 
 
-//middle-ware
-//app.use((err, req, res, next) =>{
-    //let {statusCode=500, message="something went wrong"} = err;
-   // res.status(statusCode).render("Error.ejs", {message});
-//});
+// middle-ware
+// app.use((err, req, res, next) =>{
+//     let {statusCode=500, message="something went wrong"} = err;
+//    res.status(statusCode).render("Error.ejs", {message});
+// });
 
 app.listen(8080, () =>{
     console.log("app is listening to port 8080")
@@ -187,7 +188,7 @@ app.listen(8080, () =>{
 // const store = MongoStore.create({
 //     mongoUrl: dbUrl,
 //     crypto: {
-//         secret: "MAHAKMANSIMUSKANNAMAN",
+//         secret: "",
 //     },
 //     touchAfter: 24 * 3600,
 // });
@@ -210,7 +211,7 @@ app.listen(8080, () =>{
 
 // const sessionOptions = {
 //     store,
-//     secret: "MAHAKMANSIMUSKANNAMAN",
+//     secret: "",
 //     resave: false,
 //     saveUninitialized: false,
 //     rolling: true,
