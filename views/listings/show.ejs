@@ -28,6 +28,13 @@
 
     <div class="col-8 offset-2 mb-3">
        <%  if(currUser){ %>
+
+    <form action="/pay" method="POST">
+  <input type="hidden" name="listingId" value="<%= listing._id %>">
+  <input type="hidden" name="price" value="<%= listing.price %>">
+  <button type="submit" class="btn btn-success">Book & Pay</button>
+</form>
+<br><br>
         <h4>Leave a Review</h4>
         <form action="/listings/<%= listing.id%>/reviews" method="POST" novalidate class=" needs-validation">
             <!-- <div class="mt-3 mb-3">

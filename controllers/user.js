@@ -12,9 +12,8 @@ module.exports.SignupUser = async (req, res, next) => {
         let registeredUser = await User.register(newUser, password);
 
         req.login(registeredUser, (err) => {
-            if (err) {
+            if (err)
                 return next(err);   //  now next exists
-            }
             req.flash("success", "Welcome to Wanderlust");
             return res.redirect("/listings"); //  return added
         });

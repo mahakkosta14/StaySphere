@@ -16,6 +16,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+const paymentRouter = require("./routes/payment.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
@@ -41,6 +42,8 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+app.use("/", paymentRouter);
+
 // const store = new MongoStore({ 
 //     url : dbUrl,
 //     crypto : {
@@ -52,6 +55,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 // store.on("error", () =>{
 //     console.log("ERROR IN MONGO SESSION STORE", err)
 // })
+mongoose.set('strictQuery', false);
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
@@ -66,7 +70,7 @@ const sessionOptions = {
     store,
     secret : process.env.SECRET,
     resave : false,
-    saveUninitialized : true,
+    saveUninitialized : false,
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge :  7 * 24 * 60 * 60 * 1000,
@@ -84,11 +88,24 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);  // store Mongo ObjectId
+// });
+//  passport.deserializeUser(User.deserializeUser());
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const user = await User.findById(id);  // async/await, no callback
+//     done(null, user);
+//   } catch (err) {
+//     done(err);
+//   }
+// });
 
 app.use((req, res, next) =>{
+    console.log("req.user:", req.user);
+    res.locals.currUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    res.locals.currUser = req.user;
     next();
 });
 
@@ -119,7 +136,7 @@ app.use((err, req, res, next) => {
 //    res.status(statusCode).render("Error.ejs", {message});
 // });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () =>{
     console.log("app is listening to port 8080")
 });
